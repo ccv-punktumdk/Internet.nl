@@ -7,7 +7,7 @@ services:
   # nginx proxy container, also runs certbot
   webserver:
     platform: linux/amd64
-    image: ${DOCKER_IMAGE_WEBSERVER:-${DOCKER_REGISTRY:-ghcr.io/internetstandards}/webserver:${RELEASE}}
+    image: ${DOCKER_IMAGE_WEBSERVER:-${DOCKER_REGISTRY:-ghcr.io/ccv-punktumdk}/webserver:${RELEASE}}
     restart: unless-stopped
     logging:
       driver: $LOGGING_DRIVER
@@ -68,7 +68,7 @@ services:
   # django container
   app:
     platform: linux/amd64
-    image: ${DOCKER_IMAGE_APP:-${DOCKER_REGISTRY:-ghcr.io/internetstandards}/internet.nl:${RELEASE}}
+    image: ${DOCKER_IMAGE_APP:-${DOCKER_REGISTRY:-ghcr.io/ccv-punktumdk}/internet.nl:${RELEASE}}
     restart: unless-stopped
     logging:
       driver: $LOGGING_DRIVER
@@ -171,7 +171,7 @@ services:
   # django DB migrations, runs to completion and exits with 0
   db-migrate:
     platform: linux/amd64
-    image: ${DOCKER_IMAGE_APP:-${DOCKER_REGISTRY:-ghcr.io/internetstandards}/internet.nl:${RELEASE}}
+    image: ${DOCKER_IMAGE_APP:-${DOCKER_REGISTRY:-ghcr.io/ccv-punktumdk}/internet.nl:${RELEASE}}
     networks:
       - internal
     command: migrate
@@ -206,7 +206,7 @@ services:
 
   worker: &worker
     platform: linux/amd64
-    image: ${DOCKER_IMAGE_APP:-${DOCKER_REGISTRY:-ghcr.io/internetstandards}/internet.nl:${RELEASE}}
+    image: ${DOCKER_IMAGE_APP:-${DOCKER_REGISTRY:-ghcr.io/ccv-punktumdk}/internet.nl:${RELEASE}}
     deploy:
       replicas: $WORKER_REPLICAS
     restart: unless-stopped
@@ -337,7 +337,7 @@ services:
   # celery task queue
   beat:
     platform: linux/amd64
-    image: ${DOCKER_IMAGE_APP:-${DOCKER_REGISTRY:-ghcr.io/internetstandards}/internet.nl:${RELEASE}}
+    image: ${DOCKER_IMAGE_APP:-${DOCKER_REGISTRY:-ghcr.io/ccv-punktumdk}/internet.nl:${RELEASE}}
     restart: unless-stopped
     logging:
       driver: $LOGGING_DRIVER
@@ -526,7 +526,7 @@ services:
   # unbound DNS server used for connection test
   unbound:
     platform: linux/amd64
-    image: ${DOCKER_IMAGE_UNBOUND:-${DOCKER_REGISTRY:-ghcr.io/internetstandards}/unbound:${RELEASE}}
+    image: ${DOCKER_IMAGE_UNBOUND:-${DOCKER_REGISTRY:-ghcr.io/ccv-punktumdk}/unbound:${RELEASE}}
     depends_on:
       redis:
         condition: service_healthy
@@ -568,7 +568,7 @@ services:
   # unbound resolver used for ldns-dane that require DNSSEC validation
   resolver-validating:
     platform: linux/amd64
-    image: ${DOCKER_IMAGE_UNBOUND:-${DOCKER_REGISTRY:-ghcr.io/internetstandards}/unbound:${RELEASE}}
+    image: ${DOCKER_IMAGE_UNBOUND:-${DOCKER_REGISTRY:-ghcr.io/ccv-punktumdk}/unbound:${RELEASE}}
 
     entrypoint: /entrypoint-resolver.sh
     command: ["resolver-validating.conf"]
@@ -599,7 +599,7 @@ services:
   # cron with periodic tasks
   cron:
     platform: linux/amd64
-    image: ${DOCKER_IMAGE_UTIL:-${DOCKER_REGISTRY:-ghcr.io/internetstandards}/util:${RELEASE}}
+    image: ${DOCKER_IMAGE_UTIL:-${DOCKER_REGISTRY:-ghcr.io/ccv-punktumdk}/util:${RELEASE}}
     command: crond -f -d7
     environment:
       - HOSTERS_HOF_URL
@@ -647,7 +647,7 @@ services:
   # cron daemon with access to Docker socket but no networking
   cron-docker:
     platform: linux/amd64
-    image: ${DOCKER_IMAGE_UTIL:-${DOCKER_REGISTRY:-ghcr.io/internetstandards}/util:${RELEASE}}
+    image: ${DOCKER_IMAGE_UTIL:-${DOCKER_REGISTRY:-ghcr.io/ccv-punktumdk}/util:${RELEASE}}
     command: crond -f -d7 -c /etc/crontabs-docker
     environment:
       - AUTO_UPDATE_TO
@@ -671,7 +671,7 @@ services:
 
   grafana:
     platform: linux/amd64
-    image: ${DOCKER_IMAGE_GRAFANA:-${DOCKER_REGISTRY:-ghcr.io/internetstandards}/grafana:${RELEASE}}
+    image: ${DOCKER_IMAGE_GRAFANA:-${DOCKER_REGISTRY:-ghcr.io/ccv-punktumdk}/grafana:${RELEASE}}
 
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
